@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"gitlab.bearstech.com/bearstech/journaleux/rpc"
+	gl_rpc "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/rpc"
+
+	"github.com/golang/protobuf/ptypes/empty"
 	"gitlab.bearstech.com/factory/gitlab-authenticated-rpc/client/client"
 	"golang.org/x/net/context"
 	"log"
@@ -26,9 +29,15 @@ func main() {
 		log.Fatal(err)
 	}
 	defer conn.Close()
+	gl := gl_rpc.NewGitlabClient(conn)
 	j := rpc.NewJournaleuxClient(conn)
 
 	ctx := context.Background()
+
+	_, err = gl.Ping(ctx, &empty.Empty{})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	tail, err := j.Tail(ctx, &rpc.Predicate{
 		Project: os.Args[2],
