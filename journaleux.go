@@ -1,7 +1,11 @@
 package main
 
 import (
+	"github.com/urfave/cli"
+
 	"fmt"
+	"gitlab.bearstech.com/bearstech/journaleux/client/command"
+
 	"gitlab.bearstech.com/bearstech/journaleux/rpc"
 	gl_rpc "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/rpc"
 
@@ -22,45 +26,54 @@ var (
 )
 
 func main() {
-	domain := os.Args[1]
+	var domain string
+
+	app := cli.NewApp()
+	app.Name = "Journaleux"
+
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:        "domain, d",
+			Value:       "rpc.example.com",
+			Usage:       "Target RPC server",
+			Destination: &domain,
+		},
+	}
 
 	conn, err := client.NewConn(domain)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close()
-	gl := gl_rpc.NewGitlabClient(conn)
-	j := rpc.NewJournaleuxClient(conn)
 
-	ctx := context.Background()
-
-	_, err = gl.Ping(ctx, &empty.Empty{})
-	if err != nil {
-		log.Fatal(err)
+	cmd := command.NewClient(conn)
+	app.Commands = []cli.Command{
+		{
+			Name:    "user",
+			Aliases: []string{"u"},
+			Usage:   "Get yourself",
+			Action:  cmd.User,
+		},
+		{
+			Name:    "projects",
+			Aliases: []string{"p"},
+			Usage:   "Get your projects",
+			Action:  cmd.Projects,
+		},
+		{
+			Name:    "version",
+			Aliases: []string{"v"},
+			Usage:   "Version release",
+			Action:  cmd.Version,
+		},
+		{
+			Name:    "journal",
+			Aliases: []string{"j"},
+			Usage:   "Journal",
+			Action:  cmd.Journal,
+		},
 	}
 
-	tail, err := j.Tail(ctx, &rpc.Predicate{
-		Project: os.Args[2],
-	})
+	app.Run(os.Args)
 
-	if err != nil {
-		log.Fatalf("Can't tail: %v", err)
-	}
-
-	for {
-
-		event, err := tail.Recv()
-		if err != nil {
-			log.Fatalf("Trouble with this event: %v", err)
-		}
-
-		m := event.GetRealtime()
-		s := m / 1000000
-		t := time.Unix(int64(s), 0)
-		fmt.Printf("%s !%d %s ", t.Format(time.RFC3339),
-			event.GetPriority(),
-			event.GetContainerName())
-		fmt.Println(" ", event.GetMessage())
-
-	}
 }
