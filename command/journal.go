@@ -11,14 +11,18 @@ import (
 )
 
 func (c *Client) Journal(_cli *cli.Context) error {
+	err := c.SetDomain(_cli.String("domain"))
+	if err != nil {
+		return err
+	}
 	j := rpc.NewJournaleuxClient(c.Conn)
 	gl := gl_rpc.NewGitlabClient(c.Conn)
-	_, err := gl.Ping(c.Ctx, &empty.Empty{})
+	_, err = gl.Ping(c.Ctx, &empty.Empty{})
 	if err != nil {
 		return err
 	}
 	tail, err := j.Tail(c.Ctx, &rpc.Predicate{
-		Project: "", // FIXME
+		Project: _cli.Args().First(),
 	})
 	if err != nil {
 		return err

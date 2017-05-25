@@ -2,19 +2,11 @@ package main
 
 import (
 	"github.com/urfave/cli"
+	//"sort"
 
-	"fmt"
 	"gitlab.bearstech.com/bearstech/journaleux/client/command"
 
-	"gitlab.bearstech.com/bearstech/journaleux/rpc"
-	gl_rpc "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/rpc"
-
-	"github.com/golang/protobuf/ptypes/empty"
-	"gitlab.bearstech.com/factory/gitlab-authenticated-rpc/client/client"
-	"golang.org/x/net/context"
-	"log"
 	"os"
-	"time"
 )
 
 const (
@@ -26,27 +18,21 @@ var (
 )
 
 func main() {
-	var domain string
 
 	app := cli.NewApp()
 	app.Name = "Journaleux"
+	app.Version = git_version
+	app.EnableBashCompletion = true
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:        "domain, d",
-			Value:       "rpc.example.com",
-			Usage:       "Target RPC server",
-			Destination: &domain,
+			Name:  "domain, d",
+			Value: "rpc.example.com",
+			Usage: "Target RPC server",
 		},
 	}
 
-	conn, err := client.NewConn(domain)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer conn.Close()
-
-	cmd := command.NewClient(conn)
+	cmd := command.NewClient()
 	app.Commands = []cli.Command{
 		{
 			Name:    "user",
@@ -61,18 +47,15 @@ func main() {
 			Action:  cmd.Projects,
 		},
 		{
-			Name:    "version",
-			Aliases: []string{"v"},
-			Usage:   "Version release",
-			Action:  cmd.Version,
-		},
-		{
 			Name:    "journal",
 			Aliases: []string{"j"},
-			Usage:   "Journal",
+			Usage:   "Read journal `NAME`",
 			Action:  cmd.Journal,
 		},
 	}
+
+	//sort.Sort(cli.FlagsByName(app.Flags))
+	//sort.Sort(cli.CommandsByName(app.Commands))
 
 	app.Run(os.Args)
 
