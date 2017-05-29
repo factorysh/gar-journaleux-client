@@ -63,7 +63,7 @@ func main() {
 				},
 				cli.StringFlag{
 					Name:  "regexp, r",
-					Usage: "Filter by regexp",
+					Usage: "Filter by regexp, using RE2 syntax https://github.com/google/re2/wiki/Syntax",
 				},
 			},
 		},
