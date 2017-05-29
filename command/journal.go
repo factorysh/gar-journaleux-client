@@ -9,12 +9,19 @@ import (
 	gl_rpc "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/rpc"
 	"io"
 	"log"
+	"regexp"
 	"time"
 )
 
 func (c *Client) Journal(_cli *cli.Context) error {
 	if _cli.Int("lines") > 0 && _cli.Bool("follow") {
 		return errors.New("You can't both reads n lines, and follows")
+	}
+	if _cli.String("regexp") != "" {
+		_, err := regexp.Compile(_cli.String("regexp"))
+		if err != nil {
+			return err
+		}
 	}
 	err := c.SetDomain(_cli.GlobalString("domain"))
 	if err != nil {
@@ -30,6 +37,7 @@ func (c *Client) Journal(_cli *cli.Context) error {
 		Project: _cli.Args().First(),
 		Lines:   int32(_cli.Int("lines")),
 		Follow:  _cli.Bool("follow"),
+		Regexp:  _cli.String("regexp"),
 	})
 	if err != nil {
 		return err

@@ -61,6 +61,10 @@ func main() {
 					Name:  "follow, f",
 					Usage: "Follow logs",
 				},
+				cli.StringFlag{
+					Name:  "regexp, r",
+					Usage: "Filter by regexp",
+				},
 			},
 		},
 	}
