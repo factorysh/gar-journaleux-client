@@ -58,7 +58,7 @@ func main() {
 					Usage: "Number of lines",
 				},
 				cli.BoolFlag{
-					Name:  "Follow, f",
+					Name:  "follow, f",
 					Usage: "Follow logs",
 				},
 			},
