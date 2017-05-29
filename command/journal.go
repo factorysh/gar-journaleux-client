@@ -23,6 +23,8 @@ func (c *Client) Journal(_cli *cli.Context) error {
 	}
 	tail, err := j.Tail(c.Ctx, &rpc.Predicate{
 		Project: _cli.Args().First(),
+		Lines:   int32(_cli.Int("lines")),
+		Follow:  _cli.Bool("follow"),
 	})
 	if err != nil {
 		return err

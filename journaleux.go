@@ -51,6 +51,17 @@ func main() {
 			Aliases: []string{"j"},
 			Usage:   "Read journal `NAME`",
 			Action:  cmd.Journal,
+			Flags: []cli.Flag{
+				cli.IntFlag{
+					Name:  "lines, l",
+					Value: 0,
+					Usage: "Number of lines",
+				},
+				cli.BoolFlag{
+					Name:  "Follow, f",
+					Usage: "Follow logs",
+				},
+			},
 		},
 	}
 
