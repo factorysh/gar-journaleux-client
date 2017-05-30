@@ -4,7 +4,7 @@ import (
 	"github.com/urfave/cli"
 	//"sort"
 
-	"gitlab.bearstech.com/bearstech/journaleux/client/command"
+	"gitlab.bearstech.com/factory/journaleux/client/command"
 
 	"os"
 )
