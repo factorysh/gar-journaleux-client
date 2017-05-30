@@ -58,7 +58,7 @@ func (c *Client) Journal(_cli *cli.Context) error {
 		t := time.Unix(int64(s), 0)
 		fmt.Printf("%s !%d %s ", t.Format(time.RFC3339),
 			event.GetPriority(),
-			event.GetContainerName())
+			event.Fields["CONTAINER_NAME"])
 		fmt.Println(" ", event.GetMessage())
 
 	}
