@@ -23,6 +23,7 @@ func main() {
 	app.Name = "Journaleux"
 	app.Version = git_version
 	app.EnableBashCompletion = true
+	app.Usage = "Client CLI application for journaleuxd"
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
