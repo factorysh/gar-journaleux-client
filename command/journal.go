@@ -14,8 +14,11 @@ import (
 )
 
 func (c *Client) Journal(_cli *cli.Context) error {
-	if _cli.Int("lines") > 0 && _cli.Bool("follow") {
-		return errors.New("You can't both reads n lines, and follows")
+	if _cli.Int("lines") != 0 && _cli.Bool("follow") {
+		return errors.New("Error, impossible to both print n lines and follow")
+	}
+	if _cli.Int("lines") == 0 {
+		return errors.New("Error, asking for 0 line is not supported")
 	}
 	if _cli.String("regexp") != "" {
 		_, err := regexp.Compile(_cli.String("regexp"))
