@@ -55,7 +55,7 @@ func main() {
 			Flags: []cli.Flag{
 				cli.IntFlag{
 					Name:  "lines, l",
-					Value: 0,
+					Value: -10,
 					Usage: "Number of lines",
 				},
 				cli.BoolFlag{
