@@ -14,7 +14,7 @@ import (
 )
 
 func (c *Client) Journal(_cli *cli.Context) error {
-	if _cli.Int("lines") != 0 && _cli.Bool("follow") {
+	if _cli.Int("lines") >= 0 && _cli.Bool("follow") {
 		return errors.New("Error, impossible to both print n lines and follow")
 	}
 	if _cli.Int("lines") == 0 {
