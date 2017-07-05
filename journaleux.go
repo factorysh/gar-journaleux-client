@@ -9,10 +9,6 @@ import (
 	"os"
 )
 
-const (
-	port = ":50051"
-)
-
 var (
 	git_version = ""
 )
