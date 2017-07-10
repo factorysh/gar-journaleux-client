@@ -10,8 +10,14 @@ type ProjectInfo struct {
 	Name string
 }
 
+type server struct {
+	Domain string
+	Port   string
+}
+
 type ClientConfig struct {
 	Project ProjectInfo
+	Servers map[string]server
 }
 
 func ReadClientConf(conf *ClientConfig, path string) error {
