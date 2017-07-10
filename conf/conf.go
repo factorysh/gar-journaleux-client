@@ -11,8 +11,7 @@ type ProjectInfo struct {
 }
 
 type server struct {
-	Domain string
-	Port   string
+	Address string
 }
 
 type ClientConfig struct {

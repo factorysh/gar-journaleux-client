@@ -15,16 +15,12 @@ func TestReadClientConfig(t *testing.T) {
 		t.Errorf("Project is not equal to example_project")
 	}
 
-	if conf.Servers["prod"].Domain != "prod.example.com" {
-		t.Errorf("Prod server domain is not domain.example.com")
+	if conf.Servers["prod"].Address != "prod.example.com:50051" {
+		t.Errorf("Prod server address is not prod.example.com:50051")
 	}
 
-	if conf.Servers["prod"].Port != "50051" {
-		t.Errorf("Prod server port is not 50051")
-	}
-
-	if conf.Servers["preprod"].Port != "" {
-		t.Errorf("Preprod port should be undefined")
+	if conf.Servers["preprod"].Address != "preprod.example.com" {
+		t.Errorf("Preprod server address is not preprod.example.com")
 	}
 
 }
