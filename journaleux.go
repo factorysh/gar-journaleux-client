@@ -27,6 +27,11 @@ func main() {
 			Value: "rpc.example.com",
 			Usage: "Target RPC server",
 		},
+		cli.StringFlag{
+			Name:  "server, s",
+			Value: "servers.example",
+			Usage: "Target RPC server from .journaleux.toml",
+		},
 	}
 
 	cmd := command.NewClient()

@@ -42,10 +42,23 @@ func (c *Client) Journal(_cli *cli.Context) error {
 		config.Project.Name = _cli.Args().First()
 	}
 
-	err = c.SetDomain(_cli.GlobalString("domain"))
-	if err != nil {
-		return err
+	if _cli.GlobalString("domain") != "rpc.example.com" {
+		err = c.SetDomain(_cli.GlobalString("domain"))
+		if err != nil {
+			return err
+		}
+	} else {
+		if endpoint, ok := config.Servers[_cli.GlobalString("server")]; ok {
+			err = c.SetDomain(endpoint.Address)
+			if err != nil {
+				return err
+			}
+
+		} else {
+			return fmt.Errorf("Server %s not found in config file", _cli.GlobalString("server"))
+		}
 	}
+
 	j := rpc.NewJournaleuxClient(c.Conn)
 	gl := gl_rpc.NewGitlabClient(c.Conn)
 	_, err = gl.Ping(c.Ctx, &empty.Empty{})
