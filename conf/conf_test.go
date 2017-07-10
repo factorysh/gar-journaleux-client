@@ -6,7 +6,7 @@ import (
 
 func TestReadClientConfig(t *testing.T) {
 	var conf ClientConfig
-	err := ReadClientConf(&conf, "/home/papey/repos/bt/gitlab/factory/journaleux/contrib/client.config.example.toml")
+	err := ReadClientConf(&conf, "../../contrib/client.config.example.toml")
 	if err != nil {
 		t.Errorf("Error reading client config")
 	}
