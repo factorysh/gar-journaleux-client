@@ -8,6 +8,7 @@ import (
 	gl_rpc "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/rpc"
 	"gitlab.bearstech.com/factory/journaleux/client/conf"
 	"gitlab.bearstech.com/factory/journaleux/rpc"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"regexp"
@@ -63,6 +64,10 @@ func (c *Client) Journal(_cli *cli.Context) error {
 	gl := gl_rpc.NewGitlabClient(c.Conn)
 	_, err = gl.Ping(c.Ctx, &empty.Empty{})
 	if err != nil {
+		s, ok := status.FromError(err)
+		if ok {
+			log.Fatal(s.Message())
+		}
 		return err
 	}
 	tail, err := j.Tail(c.Ctx, &rpc.Predicate{
@@ -82,7 +87,15 @@ func (c *Client) Journal(_cli *cli.Context) error {
 			if err == io.EOF {
 				return nil
 			}
-			log.Fatalf("Trouble with this event: %v", err)
+
+			s, ok := status.FromError(err)
+			if ok {
+				log.Fatal(s.Message())
+			} else {
+				log.Fatal(err)
+			}
+
+			return err
 		}
 
 		m := event.GetRealtime()
