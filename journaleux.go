@@ -49,6 +49,12 @@ func main() {
 			Action:  cmd.Projects,
 		},
 		{
+			Name:    "environments",
+			Aliases: []string{"e"},
+			Usage:   "Get your environments for a project",
+			Action:  cmd.Environments,
+		},
+		{
 			Name:    "journal",
 			Aliases: []string{"j"},
 			Usage:   "Read journal `NAME`",
