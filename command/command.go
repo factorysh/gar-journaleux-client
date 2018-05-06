@@ -17,6 +17,7 @@ func NewJournalClient(client *_cli.Client) (*JournalClient, error) {
 
 	j := &JournalClient{
 		Client: client,
+		config: new(conf.ClientConfig),
 	}
 	// read from config file
 	err := conf.ReadClientConf(j.config, ".journaleux.toml")
