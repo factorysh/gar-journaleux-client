@@ -11,14 +11,14 @@ import (
 )
 
 var (
-	git_version = ""
+	gitVersion = ""
 )
 
 func main() {
 
 	app := _cli.NewApp()
 	app.Name = "Journaleux"
-	app.Version = git_version
+	app.Version = gitVersion
 	app.Usage = "Client CLI application for journaleuxd"
 
 	cmd := _cli.NewClient()
