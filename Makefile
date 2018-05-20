@@ -47,3 +47,12 @@ docker-client-linux:
 		-w /go/src/github.com/factorysh/gar-journaleux-client/ \
 		bearstech/golang-dep \
 		make client-linux
+
+docker-client-darwin:
+	docker run -t --rm \
+		-u `id -u` \
+		-v `pwd`:/go/src/github.com/factorysh/gar-journaleux-client/ \
+		-v `pwd`/.cache:/.cache \
+		-w /go/src/github.com/factorysh/gar-journaleux-client/ \
+		bearstech/golang-dep \
+		make client-darwin
