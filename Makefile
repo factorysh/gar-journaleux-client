@@ -13,6 +13,9 @@ clean:
 	rm -rf vendor
 	rm -rf gopath
 
+pull:
+	docker pull bearstech/golang-dep
+
 protoc:
 	go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
 	protoc journaleux.proto --go_out=plugins=grpc:rpc_journal
@@ -26,3 +29,12 @@ client-linux: bin vendor
 client-darwin: bin vendor
 	GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.gitVersion=`git rev-parse HEAD`" \
 		-o bin/journaleux_darwin_amd64 github.com/factorysh/gar-journaleux-client
+
+docker-client-linux:
+	docker run -t --rm \
+		-u `id -u` \
+		-v `pwd`:/go/src/github.com/factorysh/gar-journaleux-client/ \
+		-v `pwd`/.cache:/.cache \
+		-w /go/src/github.com/factorysh/gar-journaleux-client/ \
+		bearstech/golang-dep \
+		make client-linux
