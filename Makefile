@@ -17,10 +17,12 @@ protoc:
 	go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
 	protoc journaleux.proto --go_out=plugins=grpc:rpc_journal
 
+client-all: client-linux client-darwin
+
 client-linux: bin vendor
 	GOOS=linux GOARCH=amd64 go build -ldflags "-X main.gitVersion=`git rev-parse HEAD`" \
-		-o bin/journaleux_linux_amd64 gitlab.bearstech.com/factory/journaleux/client
+		-o bin/journaleux_linux_amd64 github.com/factorysh/gar-journaleux-client
 
 client-darwin: bin vendor
 	GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.gitVersion=`git rev-parse HEAD`" \
-		-o bin/journaleux_darwin_amd64 gitlab.bearstech.com/factory/journaleux/client
+		-o bin/journaleux_darwin_amd64 github.com/factorysh/gar-journaleux-client
