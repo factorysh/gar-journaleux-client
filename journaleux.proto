@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package rpc;
+
+service Journaleux {
+    rpc Tail(Predicate) returns (stream Event) {}
+}
+
+message Predicate {
+    string  Project            = 1;
+    int32   Lines              = 2;
+    bool    Follow             = 3;
+    uint32  Since              = 4;
+    uint32  Until              = 5;
+    uint32  Priority           = 6;
+    string  Regexp             = 7;
+    map<string, string> Fields = 8;
+}
+
+message Event {
+    uint64 Monotonic           = 1;
+    uint64 Realtime            = 2;
+    string Message             = 3;
+    uint32 Priority            = 4;
+    map<string, string> Fields = 5;
+}
