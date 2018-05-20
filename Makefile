@@ -30,6 +30,15 @@ client-darwin: bin vendor
 	GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.gitVersion=`git rev-parse HEAD`" \
 		-o bin/journaleux_darwin_amd64 github.com/factorysh/gar-journaleux-client
 
+upx-client-linux: client-linux
+	upx bin/journaleux_linux_amd64
+
+upx-client-darwin: client-darwin
+	upx bin/journaleux_darwin_amd64
+
+upx-client: client
+	upx bin/journaleux
+
 docker-client-linux:
 	docker run -t --rm \
 		-u `id -u` \
