@@ -7,11 +7,11 @@ import (
 	"regexp"
 	"time"
 
+	rpc "github.com/factorysh/gar-journaleux-client/rpc_journal"
+	gl_rpc "github.com/factorysh/gitlab-authenticated-rpc-client/rpc_gitlab"
 	"github.com/golang/protobuf/ptypes/empty"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
-	gl_rpc "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/rpc"
-	"gitlab.bearstech.com/factory/journaleux/rpc"
 	"google.golang.org/grpc/status"
 )
 

@@ -2,8 +2,9 @@ package conf
 
 import (
 	"fmt"
-	"github.com/BurntSushi/toml"
 	"os"
+
+	"github.com/BurntSushi/toml"
 )
 
 type ProjectInfo struct {

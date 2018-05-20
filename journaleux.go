@@ -1,13 +1,13 @@
 package main
 
 import (
-	_cli "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/client/cli"
-	//"sort"
+	_cli "github.com/factorysh/gitlab-authenticated-rpc-client/cli"
 
 	"os"
 
-	_command "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/client/command"
-	"gitlab.bearstech.com/factory/journaleux/client/command"
+	_command "github.com/factorysh/gitlab-authenticated-rpc-client/command"
+
+	"github.com/factorysh/gar-journaleux-client/command"
 )
 
 var (

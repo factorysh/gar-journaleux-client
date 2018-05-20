@@ -3,9 +3,9 @@ package command
 import (
 	"errors"
 
+	"github.com/factorysh/gar-journaleux-client/conf"
+	_cli "github.com/factorysh/gitlab-authenticated-rpc-client/cli"
 	"github.com/urfave/cli"
-	_cli "gitlab.bearstech.com/factory/gitlab-authenticated-rpc/client/cli"
-	"gitlab.bearstech.com/factory/journaleux/client/conf"
 )
 
 type JournalClient struct {

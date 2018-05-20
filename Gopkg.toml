@@ -1,0 +1,7 @@
+[[constraint]]
+  name = "github.com/factorysh/gitlab-authenticated-rpc-client"
+  revision = "42497b189cc817444558f50b65bd36cde37a7804"
+
+[[constraint]]
+  name = "github.com/BurntSushi/toml"
+  version = "~0.3.0"
