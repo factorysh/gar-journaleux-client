@@ -8,6 +8,12 @@ vendor:
 bin:
 	mkdir bin
 
+bin/darwin:
+	mkdir -p bin/darwin
+
+bin/linux_amd64:
+	mkdir -p bin/linux_amd64
+
 clean:
 	rm -rf bin
 	rm -rf vendor
@@ -15,6 +21,7 @@ clean:
 
 pull:
 	docker pull bearstech/golang-dep
+	docker pull bearstech/upx
 
 protoc:
 	go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
@@ -22,19 +29,23 @@ protoc:
 
 client-all: client-linux client-darwin
 
-client-linux: bin vendor
-	GOOS=linux GOARCH=amd64 go build -ldflags "-X main.gitVersion=`git rev-parse HEAD`" \
-		-o bin/journaleux_linux_amd64 github.com/factorysh/gar-journaleux-client
+client-linux: bin/linux_amd64 vendor
+	GOOS=linux GOARCH=amd64 go build \
+		-ldflags "-X main.gitVersion=`git rev-parse HEAD`" \
+		-o bin/linux_amd64/journaleux \
+		github.com/factorysh/gar-journaleux-client
 
-client-darwin: bin vendor
-	GOOS=darwin GOARCH=amd64 go build -ldflags "-X main.gitVersion=`git rev-parse HEAD`" \
-		-o bin/journaleux_darwin_amd64 github.com/factorysh/gar-journaleux-client
+client-darwin: bin/darwin vendor
+	GOOS=darwin GOARCH=amd64 go build \
+		-ldflags "-X main.gitVersion=`git rev-parse HEAD`" \
+		-o bin/darwin/journaleux \
+		github.com/factorysh/gar-journaleux-client
 
 upx-client-linux: client-linux
-	upx bin/journaleux_linux_amd64
+	upx bin/linux_amd64/journaleux
 
 upx-client-darwin: client-darwin
-	upx bin/journaleux_darwin_amd64
+	upx bin/darwin/journaleux
 
 upx-client: client
 	upx bin/journaleux
@@ -47,6 +58,11 @@ docker-client-linux:
 		-w /go/src/github.com/factorysh/gar-journaleux-client/ \
 		bearstech/golang-dep \
 		make client-linux
+	docker run -t --rm \
+		-u `id -u` \
+		-v `pwd`:/upx \
+		bearstech/upx \
+		upx bin/linux_amd64/journaleux
 
 docker-client-darwin:
 	docker run -t --rm \
@@ -56,3 +72,10 @@ docker-client-darwin:
 		-w /go/src/github.com/factorysh/gar-journaleux-client/ \
 		bearstech/golang-dep \
 		make client-darwin
+	docker run -t --rm \
+		-u `id -u` \
+		-v `pwd`:/upx \
+		bearstech/upx \
+		upx bin/darwin/journaleux
+
+docker-clients: docker-client-linux docker-client-darwin
